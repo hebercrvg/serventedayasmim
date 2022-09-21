@@ -10,7 +10,7 @@ namespace ServenteDaYasmim.Services
         public void FaturarGuia(string numberOfGuia)
         {
             var options = new ChromeOptions();
-            
+
             //options.AddArgument("headless");
 
             var driver = new ChromeDriver(options);
@@ -30,16 +30,39 @@ namespace ServenteDaYasmim.Services
 
             SetDateAndTime(driver);
 
+            SetPrestadorExecutante(driver);
+
             ClickFaturar(driver);
-            
+
             driver.Close();
+        }
+
+        private void SetPrestadorExecutante(ChromeDriver driver)
+        {
+            try
+            {
+                var selectMotivo = new SelectElement(driver.FindElement(By.Id("pres_ptu0")));
+
+                if (selectMotivo is null)
+                    return;
+
+                selectMotivo.SelectByText("YASMIN BARBOSA RODRIGUES");
+
+                Thread.Sleep(3000);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private void ClickFaturar(ChromeDriver driver)
         {
             var buttonFaturar = driver.FindElement(By.Id("apresentar"));
-            
+
             buttonFaturar.Click();
+
+            Thread.Sleep(2000);
         }
 
         private void Login(ChromeDriver driver)
@@ -126,7 +149,7 @@ namespace ServenteDaYasmim.Services
             inputHoraInicialRelogio.SendKeys(horaInicial);
             inputHoraFinalRelogio.SendKeys(horaFinal);
 
-            
+
 
             //TODO: Setar valores da data e horario
         }

@@ -29,6 +29,7 @@ namespace ServenteDaYasmim.Services
             {
                 AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
             };
+
             _client.StartReceiving(
                 updateHandler: HandleUpdateAsync,
                 pollingErrorHandler: HandlePollingErrorAsync,
@@ -52,20 +53,24 @@ namespace ServenteDaYasmim.Services
                 // Only process Message updates: https://core.telegram.org/bots/api#message
                 if (update.Message is not { } message)
                     return;
+
                 // Only process text messages
                 if (message.Text is not { } messageText)
                     return;
 
-                if (messageText.StartsWith("/"))
+                if (!messageText.StartsWith("/"))
                 {
-                    if (messageText.StartsWith("/faturarguias"))
-                    {
-                        await FaturarGuiasCommand(message, cancellationToken);
-                        return;
-                    }
-
                     await _client.SendTextMessageAsync(chatId: message.Chat.Id, text: "Comando não encontrado.", cancellationToken: cancellationToken);
+                    return;
                 }
+
+                if (messageText.StartsWith("/faturarguias"))
+                {
+                    await FaturarGuiasCommand(message, cancellationToken);
+                    return;
+                }
+
+                await _client.SendTextMessageAsync(chatId: message.Chat.Id, text: "Comando não encontrado.", cancellationToken: cancellationToken);
 
                 //// Echo received message text
                 //Message sentMessage = await botClient.SendTextMessageAsync(
@@ -119,7 +124,7 @@ namespace ServenteDaYasmim.Services
                                 chatId: message.Chat.Id,
                                 text: $"Iniciando faturamento da guia {numeroGuia}...",
                                 cancellationToken: cancellationToken);
-                    
+
                     await _client.SendChatActionAsync(message.Chat.Id, ChatAction.Typing, cancellationToken: cancellationToken);
 
                     _unimedService.FaturarGuia(numeroGuia);

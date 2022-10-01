@@ -138,9 +138,10 @@ namespace ServenteDaYasmim.Services
             var inputHoraFinalRelogio = driver.FindElement(By.Id("horafP0"));
             var inputHoraInicial = driver.FindElement(By.Id("inicio"));
             var inputHoraFinal = driver.FindElement(By.Id("fim"));
-
-            var horaInicial = "08:00:00";
-            var horaFinal = "08:30:00";
+            
+            var randomHora = new Random().NextInt64(7, 18);
+            var horaInicial = $"{randomHora}:00:00";
+            var horaFinal = $"{randomHora}:30:00";
 
             inputHoraInicial.SendKeys(horaInicial);
             inputHoraFinal.SendKeys(horaFinal);

@@ -144,7 +144,9 @@ namespace ServenteDaYasmim.Services
             var horaFinal = $"{randomHora}:30:00";
 
             inputHoraInicial.SendKeys(horaInicial);
+            Thread.Sleep(1000);
             inputHoraFinal.SendKeys(horaFinal);
+            Thread.Sleep(1000);
 
             inputDataRelogio.SendKeys(DateTime.Now.ToString("dd/MM/yyyy"));
             inputHoraInicialRelogio.SendKeys(horaInicial);

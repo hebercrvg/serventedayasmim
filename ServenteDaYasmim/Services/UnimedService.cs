@@ -18,7 +18,7 @@ namespace ServenteDaYasmim.Services
 
             Login(driver);
 
-            Thread.Sleep(10000);
+            Thread.Sleep(6000);
 
             EnterOnFaturamentoSeriadoPage(driver);
 
@@ -150,9 +150,9 @@ namespace ServenteDaYasmim.Services
 
             inputDataRelogio.SendKeys(DateTime.Now.ToString("dd/MM/yyyy"));
             inputHoraInicialRelogio.SendKeys(horaInicial);
+            Thread.Sleep(1000);
             inputHoraFinalRelogio.SendKeys(horaFinal);
-
-
+            Thread.Sleep(1000);
 
             //TODO: Setar valores da data e horario
         }

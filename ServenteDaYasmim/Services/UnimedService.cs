@@ -34,7 +34,27 @@ namespace ServenteDaYasmim.Services
 
             ClickFaturar(driver);
 
+            VerificarSeFaturou(driver);
+
             driver.Close();
+        }
+
+        private void VerificarSeFaturou(ChromeDriver driver)
+        {
+            try 
+            {
+                var alertSuccess = driver.FindElements(By.ClassName("alert-success"));
+
+                if (alertSuccess?.Any() == false)
+                {
+                    throw new Exception("Não foi encontrado no site o aviso verde 'Guia faturada com sucesso.'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception("Não foi encontrado no site o aviso verde 'Guia faturada com sucesso.'.");
+            }
         }
 
         private void SetPrestadorExecutante(ChromeDriver driver)
@@ -139,9 +159,17 @@ namespace ServenteDaYasmim.Services
             var inputHoraInicial = driver.FindElement(By.Id("inicio"));
             var inputHoraFinal = driver.FindElement(By.Id("fim"));
             
-            var randomHora = new Random().NextInt64(7, 18);
+            int randomHora = Faker.RandomNumber.Next(7, 18);
+            Console.WriteLine($"Random hour | {randomHora}");
+            // int randomHora = new Random().Next(7, 18);
             var horaInicial = $"{randomHora}:00:00";
             var horaFinal = $"{randomHora}:30:00";
+
+            if (randomHora < 10)
+            {
+                horaInicial = $"0{randomHora}:00:00";
+                horaFinal = $"0{randomHora}:30:00";
+            }
 
             inputHoraInicial.SendKeys(horaInicial);
             Thread.Sleep(1000);
